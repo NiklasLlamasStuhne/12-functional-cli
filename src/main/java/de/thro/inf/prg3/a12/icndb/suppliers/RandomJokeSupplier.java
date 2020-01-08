@@ -6,11 +6,13 @@ import de.thro.inf.prg3.a12.model.JokeDto;
 import de.thro.inf.prg3.a12.model.ResponseWrapper;
 import org.apache.commons.lang3.NotImplementedException;
 
+import java.util.function.Supplier;
+
 /**
  * @author Peter Kurfer
  */
 
-public final class RandomJokeSupplier {
+public final class RandomJokeSupplier implements Supplier {
 
     /* ICNDB API proxy to retrieve jokes */
     private final ICNDBApi icndbApi;
@@ -26,6 +28,11 @@ public final class RandomJokeSupplier {
 
          * if an exception occurs return null */
 
-        throw new NotImplementedException("Method `get()` is not implemented");
+        try {
+        	return icndbApi.getRandomJoke().get();
+		}catch(Exception e ){
+        	return null;
+		}
+
     }
 }

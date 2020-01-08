@@ -1,11 +1,17 @@
 package de.thro.inf.prg3.a12.icndb;
 
+import de.thro.inf.prg3.a12.model.JokeDto;
+import de.thro.inf.prg3.a12.model.ResponseWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.util.Objects;
 import java.util.function.Consumer;
+
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 /**
  * @author Peter Kurfer
@@ -24,18 +30,21 @@ class JokesGeneratorTests {
 
 		/* ensure termination to avoid infinite stream error */
 
+		assertTimeout(Duration.ofSeconds(5L), () -> jokeGenerator.randomJokesStream()
 			/* filter null objects */
-
+			.filter(Objects::nonNull)
 			/* skip some elements */
-
+			.skip(3)
 			/* limit to 5 elements due to infinite stream */
-
+			.limit(5)
 			/* unwrap ResponseWrapper */
-
+			.map(ResponseWrapper::getValue)
 			/* unwrap actual joke String */
-
+			.map(JokeDto::getJoke)
 			/* apply consumer */
+			.forEach(consumer)
 
+		);
     }
 
 
